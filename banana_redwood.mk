@@ -14,8 +14,8 @@ $(call inherit-product, device/xiaomi/redwood/device.mk)
 # Inherit some common Lineage stuff.
 $(call inherit-product, vendor/banana/config/common.mk)
 
-# MIUI Camera
-$(call inherit-product-if-exists, vendor/xiaomi/camera/miuicamera.mk)
+# Call the Leica Camera setup
+$(call inherit-product-if-exists, vendor/xiaomi/redwood-miuicamera/products/miuicamera.mk)
 
 PRODUCT_BRAND := POCO
 PRODUCT_DEVICE := redwood
