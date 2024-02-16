@@ -23,6 +23,7 @@ AB_OTA_PARTITIONS += \
     vbmeta \
     vbmeta_system \
     vendor \
+    vendor_dlkm \
     vendor_boot
 
 # Architecture
@@ -95,8 +96,8 @@ BOARD_MKBOOTIMG_ARGS += --header_version $(BOARD_BOOT_HEADER_VERSION)
 TARGET_KERNEL_ADDITIONAL_FLAGS := TARGET_PRODUCT=$(PRODUCT_DEVICE)
 TARGET_KERNEL_NO_GCC := true
 TARGET_KERNEL_SOURCE := kernel/xiaomi/redwood
-TARGET_KERNEL_CONFIG := vendor/xiaomi-qgki_defconfig vendor/debugfs.config
-TARGET_KERNEL_CONFIG += vendor/redwood-fragment.config
+TARGET_KERNEL_CONFIG := vendor/lahaina-qgki_defconfig vendor/debugfs.config 
+TARGET_KERNEL_CONFIG += vendor/redwood_QGKI.config
 
 BOARD_KERNEL_CMDLINE += androidboot.console=ttyMSM0
 BOARD_KERNEL_CMDLINE += androidboot.hardware=qcom
@@ -117,7 +118,6 @@ BOARD_KERNEL_CMDLINE += kpti=off
 BOOT_KERNEL_MODULES := \
     goodix_core.ko \
     xiaomi_touch.ko
-BOARD_VENDOR_KERNEL_MODULES_LOAD := $(strip $(shell cat $(DEVICE_PATH)/modules.load))
 BOARD_VENDOR_RAMDISK_RECOVERY_KERNEL_MODULES_LOAD := $(BOOT_KERNEL_MODULES)
 
 # Partitions
@@ -130,7 +130,7 @@ BOARD_VENDOR_BOOTIMAGE_PARTITION_SIZE := 100663296
 BOARD_USES_METADATA_PARTITION := true
 
 BOARD_SUPER_PARTITION_GROUPS := qti_dynamic_partitions
-BOARD_QTI_DYNAMIC_PARTITIONS_PARTITION_LIST := odm system system_ext vendor product
+BOARD_QTI_DYNAMIC_PARTITIONS_PARTITION_LIST := odm product system system_ext vendor vendor_dlkm
 BOARD_QTI_DYNAMIC_PARTITIONS_SIZE := 9122611200 # BOARD_SUPER_PARTITION_SIZE - 4MB
 
 BOARD_ODMIMAGE_FILE_SYSTEM_TYPE := ext4
@@ -139,6 +139,7 @@ BOARD_SYSTEM_EXTIMAGE_FILE_SYSTEM_TYPE := ext4
 BOARD_SYSTEMIMAGE_FILE_SYSTEM_TYPE := ext4
 BOARD_USERDATAIMAGE_FILE_SYSTEM_TYPE := f2fs
 BOARD_VENDORIMAGE_FILE_SYSTEM_TYPE := ext4
+BOARD_VENDOR_DLKMIMAGE_FILE_SYSTEM_TYPE := ext4
 
 ifeq ($(WITH_GAPPS),true)
 BOARD_PRODUCTIMAGE_PARTITION_RESERVED_SIZE := 104857600
@@ -156,6 +157,7 @@ TARGET_COPY_OUT_ODM := odm
 TARGET_COPY_OUT_SYSTEM_EXT := system_ext
 TARGET_COPY_OUT_VENDOR := vendor
 TARGET_COPY_OUT_PRODUCT := product
+TARGET_COPY_OUT_VENDOR_DLKM := vendor_dlkm
 
 # Disable sparse for ext images
 TARGET_USERIMAGES_SPARSE_EXT_DISABLED := true
@@ -231,4 +233,7 @@ CONFIG_IEEE80211AX := true
 
 # Inherit proprietary blobs
 include vendor/xiaomi/redwood/BoardConfigVendor.mk
+
+# Inherit from proprietary files for Leica Camera
+-include vendor/xiaomi/redwood-miuicamera/products/board.mk
 
