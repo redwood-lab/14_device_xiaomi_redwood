@@ -1019,7 +1019,6 @@ IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
             <instance>default</instance>
         </interface>
     </hal>
-  </hal>
   <!-- Dolby -->
   <hal format="hidl" optional="true">
       <name>vendor.dolby.hardware.dms</name>
